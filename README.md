@@ -1,20 +1,21 @@
-# 🧠 Algorithm Project — Pair 4: Heap Data Structures
+# Algorithm Project — Pair 4: Heap Data Structures
 
 **Student A:** MinHeap Implementation (decrease-key, merge)  
 **Student B:** MaxHeap Implementation (increase-key, extract-max)
 
 ---
 
-## 📄 Peer Analysis Report — MinHeap (by Student A)
+## Peer Analysis Report — MinHeap (by Student A)
+
 **Reviewer:** Student B  
 **Analyzed file:** `MinHeap.java`  
 **Supporting class:** `PerformanceTracker.java`
 
 ---
 
-### 1️⃣ Algorithm Overview
-The implementation is a **Min-Heap** data structure that maintains a complete binary tree, ensuring that each parent node is smaller than its children.  
-The smallest element is always stored at the root (`heap[0]`).
+### 1. Algorithm Overview
+
+The implementation represents a Min-Heap data structure based on a complete binary tree, where each parent node is smaller than its children. The minimum element is always located at the root (`heap[0]`).
 
 **Implemented operations:**
 - `insert(int key)`
@@ -22,81 +23,82 @@ The smallest element is always stored at the root (`heap[0]`).
 - `decreaseKey(int i, int newVal)`
 - `merge(MinHeap other)`
 
-Helper methods: `heapifyUp`, `heapifyDown`, `swap`, `printHeap()`.
+Helper methods include `heapifyUp`, `heapifyDown`, `swap`, and `printHeap`.
 
 ---
 
-### 2️⃣ Complexity Analysis
+### 2. Complexity Analysis
 
-| Operation | Best | Average | Worst | Description |
-|------------|------|----------|--------|--------------|
-| `insert()` | Θ(1) | O(log n) | O(log n) | Percolate up if needed. |
-| `extractMin()` | Θ(1) | O(log n) | O(log n) | Percolate down. |
-| `decreaseKey()` | Θ(1) | O(log n) | O(log n) | Bubble up the decreased key. |
-| `merge()` | O(n + m) | O(n + m) | O(n + m) | Sequential insertion. |
+| Operation | Best Case | Average Case | Worst Case | Description |
+|------------|------------|---------------|--------------|--------------|
+| `insert()` | Θ(1) | O(log n) | O(log n) | Inserts an element and restores heap property using percolate-up. |
+| `extractMin()` | Θ(1) | O(log n) | O(log n) | Removes the smallest element and restores heap property. |
+| `decreaseKey()` | Θ(1) | O(log n) | O(log n) | Decreases the value and repositions the element upward. |
+| `merge()` | O(n + m) | O(n + m) | O(n + m) | Sequentially inserts all elements from another heap. |
 
-**Space Complexity:** O(n) total, with optional O(log n) recursion depth.
-
----
-
-### 3️⃣ Code Quality Evaluation
-
-✅ **Strengths:**
-- Well-documented and modular code.  
-- Proper error handling (`IllegalArgumentException`, `IllegalStateException`).  
-- Integration with `PerformanceTracker` for metrics collection.  
-- Readable structure and naming conventions.
-
-⚠️ **Weaknesses / Suggestions:**
-1. **Inefficient merge()** — sequential insertions instead of a single heapify.  
-2. **Memory tracking** — `addMemoryAllocation()` called too often.  
-3. **Recursive heapifyDown()** — can be replaced with iterative.  
-4. **No array access tracking** — tracker method `addArrayAccess()` unused.  
-5. **Missing tests for edge cases.**
+**Space Complexity:** O(n) total, with an optional O(log n) recursive call depth in `heapifyDown`.
 
 ---
 
-### 4️⃣ Empirical Results (Expected Behavior)
+### 3. Code Quality Evaluation
 
-| n | Avg Time (ms) | Comparisons | Swaps | Allocations |
-|---|----------------|-------------|--------|--------------|
+**Strengths:**
+- The implementation is well-structured, modular, and adheres to object-oriented principles.  
+- Proper error handling is included (`IllegalArgumentException`, `IllegalStateException`).  
+- Integration with `PerformanceTracker` provides detailed operation metrics.  
+- Naming conventions and documentation are consistent and clear.
+
+**Weaknesses and Recommendations:**
+1. The `merge()` method is implemented using sequential insertions, which results in O((n + m) log(n + m)) complexity instead of O(n + m). A more efficient approach would rebuild the heap in a single pass.
+2. The `addMemoryAllocation()` method is invoked multiple times unnecessarily. It should only be called during actual memory expansion.
+3. The `heapifyDown()` method is recursive and could be rewritten iteratively to avoid stack overhead.
+4. The `PerformanceTracker` method `addArrayAccess()` is not utilized and should be integrated for more precise tracking.
+5. Additional unit tests are recommended for edge cases, such as empty heaps and duplicate elements.
+
+---
+
+### 4. Empirical Results (Expected Behavior)
+
+| Input Size (n) | Average Execution Time (ms) | Comparisons | Swaps | Memory Allocations |
+|-----------------|-----------------------------|--------------|--------|---------------------|
 | 100 | ~0 | ~350 | ~180 | ~100 |
 | 1,000 | ~1 | ~4,000 | ~2,100 | ~1,000 |
 | 10,000 | ~3 | ~47,000 | ~24,500 | ~10,000 |
 
-- Time grows logarithmically (O(n log n)).  
-- Swaps and comparisons scale predictably.  
-- Memory usage grows linearly with n.
+The time complexity follows the expected logarithmic trend O(n log n).  
+The number of swaps and comparisons scales predictably, while memory usage grows linearly with input size.
 
 ---
 
-### 5️⃣ Comparison with MaxHeap
+### 5. Comparison with MaxHeap
 
-| Feature | MinHeap (Student A) | MaxHeap (Student B) |
-|----------|---------------------|---------------------|
-| Property | Parent < Child | Parent > Child |
-| Key Update | decreaseKey() | increaseKey() |
-| Merge | Implemented | Not required |
-| Main Operation | extractMin() | extractMax() |
+| Aspect | MinHeap (Student A) | MaxHeap (Student B) |
+|---------|----------------------|----------------------|
+| Heap Property | Parent < Child | Parent > Child |
+| Key Update Operation | `decreaseKey()` | `increaseKey()` |
+| Merge Function | Implemented | Not required |
+| Main Operation | `extractMin()` | `extractMax()` |
 
-Both have the same structure and asymptotic complexity.  
-MinHeap includes an extra `merge()` feature with room for optimization.
-
----
-
-### 6️⃣ Conclusion
-
-The `MinHeap` code is **functionally correct, clear, and well-instrumented**.  
-It fully meets assignment requirements and demonstrates solid understanding of heap operations.
-
-**Ratings:**
-- Correctness: ⭐ 10/10  
-- Readability: ⭐ 9/10  
-- Performance: ⚙️ 8/10  
-- Testing: 🧪 7.5/10  
-- Overall: **8.6 / 10**
+Both implementations share identical asymptotic complexities and structural logic.  
+The MinHeap implementation provides an additional `merge()` feature, which introduces an opportunity for further optimization.
 
 ---
 
-📘 *Prepared by Student B — Peer Review for Student A’s MinHeap Implementation*  
-📅 *Algorithm Analysis Report — Pair 4 (Heap Structures)*  
+### 6. Conclusion
+
+The `MinHeap` implementation is correct, logically consistent, and well-documented.  
+It demonstrates a solid understanding of heap operations and fulfills the project’s structural and analytical requirements.
+
+**Evaluation Summary:**
+- **Correctness:** 10 / 10  
+- **Readability:** 9 / 10  
+- **Performance:** 8 / 10  
+- **Testing Coverage:** 7.5 / 10  
+- **Overall Quality:** 8.6 / 10  
+
+---
+
+**Prepared by:** Student B  
+**Report Title:** Peer Review of Student A’s MinHeap Implementation  
+**Project:** Algorithmic Analysis — Pair 4 (Heap Data Structures)
+
