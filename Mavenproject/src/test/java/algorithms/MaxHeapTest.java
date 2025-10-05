@@ -33,6 +33,7 @@ public class MaxHeapTest {
         assertTrue(idx >= 0);
         h.increaseKey(idx, 100);
         assertEquals(100, h.peek());
+
     }
 
     @Test
